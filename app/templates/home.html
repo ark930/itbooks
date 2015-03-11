@@ -1,0 +1,14 @@
+{% block containter %}
+<div class="row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+        <form class="form-inline" method="POST" action="/search" name="search">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.keywords }}
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

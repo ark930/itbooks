@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block container %}
+    <div class="well">
+        <img src="{{ book['image'] }}"/>
+        <h4>{{ book['title'] }}</h4>
+        <h5>{{ book['sub_title'] }}</h5>
+        <p><b>Description</b>: {{ book['description'] }}</p>
+        <p><b>Author</b>: {{ book['author'] }}</p>
+        <p><b>ISBN</b>: {{ book['isbn'] }}</p>
+        <p><b>Year</b>: {{ book['year'] }}</p>
+        <p><b>Page</b>: {{ book['page'] }}</p>
+        <p><b>Publisher</b>: {{ book['publisher'] }}</p>
+        <b>Download</b>: <a href="{{ book['download'] }}">{{ book['title'] }}</a>
+    </div>
+{% endblock %}

@@ -24,7 +24,7 @@ class Book(db.Model):
                 self.sub_title = val
             elif key == 'Description':
                 self.description = val
-            elif key == 'isbn':
+            elif key == 'ISBN':
                 self.isbn = val
             elif key == 'Author':
                 self.author = val

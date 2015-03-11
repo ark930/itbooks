@@ -33,11 +33,11 @@ def get_book(id):
 # return 'post book'
 
 
-@book_blueprint.route('/books/<string:keys>')
-@book_blueprint.route('/books/<string:keys>/page/<int:number>')
-def get_books(keys, number=1):
+@book_blueprint.route('/books/<string:keywords>')
+@book_blueprint.route('/books/<string:keywords>/page/<int:number>')
+def get_books(keywords, number=1):
     request_url = path.join(base_url, 'search')
-    request_url = path.join(request_url, keys)
+    request_url = path.join(request_url, keywords)
 
     if number != 1:
         request_url = path.join(request_url, 'page')
@@ -52,12 +52,9 @@ def get_books(keys, number=1):
             book = Book(**b)
             books.append(book)
 
-        print data['Page']
         pagination = Pagination((int(data['Page'])+10)/10, 10, int(data['Total']))
-        print pagination.page,  pagination.pages
-        for page in pagination.iter_pages():
-            print page
-        return render_template('books.html', books=books, pagination=pagination)
+
+        return render_template('books.html', books=books, pagination=pagination, keywords=keywords)
 
     return do_error(data['Error'])
 
@@ -65,10 +62,6 @@ def get_books(keys, number=1):
 def do_error(error_no):
     return '发生错误：Error=' + error_no
 
-
-def do_pagination(data):
-    page_count = (int(data['Total']) + 10) / 10
-    now_page = data['Page']
 
 
 

@@ -20,7 +20,7 @@ class Pagination(object):
     def has_next(self):
         return self.page < self.pages
 
-    def iter_pages(self, left_edge=0, left_current=4, right_current=5, right_edge=0):
+    def iter_pages(self, left_edge=0, left_current=5, right_current=6, right_edge=0):
         last = 0
         for num in xrange(1, self.pages + 1):
             if num <= left_edge or (num > self.page - left_current - 1 and num < self.page + right_current) or num > self.pages - right_edge:

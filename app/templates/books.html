@@ -5,13 +5,9 @@
     {% for book in books %}
     <div class="well">
         <a href="/book/{{ book['id'] }}"><img src="{{ book['image'] }}"/></a>
-
         <h2>{{ book['title'] }}</h2>
-
         <p><b>ID</b>: {{ book['id'] }}</p>
-
         <p><b>ISBN</b>: {{ book['isbn'] }}</p>
-
         <p><b>Book Description</b>: {{ book['description'] }}</p>
     </div>
     {% endfor %}
@@ -32,7 +28,6 @@
                 <span aria-hidden="true">&laquo;</span>
             </li>
         {% endif %}
-
         {% for page in pagination.iter_pages() %}
             {% if page %}
                 {% if page != pagination.page %}
@@ -41,10 +36,8 @@
                     <li class="active"><a href="#">{{ page }}</a></li>
                 {% endif %}
             {% else %}
-
             {% endif %}
         {% endfor %}
-
         {% if pagination.has_next %}
             <li>
                 <a href="/books/{{keywords}}/page/{{ pagination.pages }}" aria-label="Next">

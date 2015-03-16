@@ -2,6 +2,8 @@ from .base import ItbooksApiBase
 from .error import ItbookApiError
 from app.models.book import Book
 from app.book.pagination import Pagination
+from app import db
+from sqlalchemy.exc import IntegrityError
 
 
 class BookApi(ItbooksApiBase):
@@ -14,8 +16,8 @@ class BookApi(ItbooksApiBase):
 
         raise ItbookApiError(data['Error'])
 
-    def search_books(self, keywords, number):
-        r = self._get('search/%s/page/%s' % (keywords, number))
+    def search_books(self, keywords, page=1):
+        r = self._get('search/%s/page/%s' % (keywords, page))
         data = r.json()
 
         if data['Error'] == '0':
@@ -31,3 +33,28 @@ class BookApi(ItbooksApiBase):
                 return ItbookApiError('No data')
 
         raise ItbookApiError(data['Error'])
+
+    def record(self, keywords):
+        pagination = self.save_data(keywords, 1)
+
+        while pagination.has_next:
+            pagination = self.save_data(keywords, pagination.page+1)
+
+        db.session.commit()
+
+    def save_data(self, keywords, page):
+        books, pagination = self.search_books(keywords, page)
+        for b in books:
+            print b
+            self.db_insert(b)
+
+        return pagination
+
+    def db_insert(self, data):
+        try:
+            db.session.add(data)
+            db.session.flush()
+        except IntegrityError:
+            print 'except'
+            db.session.rollback()
+

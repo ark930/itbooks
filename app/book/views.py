@@ -11,6 +11,7 @@ from app.api.book import BookApi
 book_blueprint = Blueprint('book', __name__)
 base_url = 'http://it-ebooks-api.info/v1'
 
+
 @book_blueprint.route('/')
 def index():
     return 'hello'
@@ -39,12 +40,15 @@ def do_search():
         redirect_url = path.join('/books', form.data['keywords'])
         return redirect(redirect_url)
 
-    return render_template('/home.html', form=form)
+    return render_template('home.html', form=form)
 
 
-@book_blueprint.route('/record')
-def record():
-    pass
+@book_blueprint.route('/record/<string:keywords>')
+def record(keywords):
+    api = BookApi()
+    api.record(keywords)
+
+    return 'record successful'
 
 
 

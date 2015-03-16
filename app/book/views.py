@@ -51,5 +51,17 @@ def record(keywords):
     return 'record successful'
 
 
+@book_blueprint.route('/pagination')
+@book_blueprint.route('/pagination/<int:page>')
+def pagination(page=1):
+    api = BookApi()
+    paginator = api.pagination(page)
 
+    print paginator.has_next
+    print paginator.has_prev
+    print paginator.next_num
+    print paginator.prev_num
+    for book in paginator.items:
+        print book
 
+    return render_template('paginator.html', paginator=paginator)

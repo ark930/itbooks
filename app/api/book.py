@@ -42,6 +42,11 @@ class BookApi(ItbooksApiBase):
 
         db.session.commit()
 
+    def pagination(self, page):
+        paginator = Book.query.paginate(page, 10, True)
+
+        return paginator
+
     def save_data(self, keywords, page):
         books, pagination = self.search_books(keywords, page)
         for b in books:
@@ -51,10 +56,9 @@ class BookApi(ItbooksApiBase):
         return pagination
 
     def db_insert(self, data):
-        try:
+        if Book.query.filter_by(id=data.id).first() is None:
             db.session.add(data)
-            db.session.flush()
-        except IntegrityError:
+        else:
             print 'except'
-            db.session.rollback()
+
 

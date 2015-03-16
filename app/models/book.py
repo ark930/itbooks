@@ -13,6 +13,7 @@ class Book(db.Model):
     publisher = db.Column(db.String(32))
     image = db.Column(db.String(256))
     download = db.Column(db.String(256))
+    book2keyword = db.relationship('Book2keyword', backref='book', lazy='dynamic')
 
     def __init__(self, **args):
         for key, val in args.items():

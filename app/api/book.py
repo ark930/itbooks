@@ -1,9 +1,9 @@
 from .base import ItbooksApiBase
 from .error import ItbookApiError
 from app.models.book import Book
+from app.models.book2keyword import Book2keyword
 from app.book.pagination import Pagination
 from app import db
-from sqlalchemy.exc import IntegrityError
 
 
 class BookApi(ItbooksApiBase):
@@ -51,14 +51,20 @@ class BookApi(ItbooksApiBase):
         books, pagination = self.search_books(keywords, page)
         for b in books:
             print b
-            self.db_insert(b)
+            self.db_insert(b, keywords)
 
         return pagination
 
-    def db_insert(self, data):
-        if Book.query.filter_by(id=data.id).first() is None:
+    def db_insert(self, data, keyworkds):
+        book = Book.query.filter_by(id=data.id).first()
+        if book is None:
             db.session.add(data)
+            book = data
         else:
-            print 'except'
+            print 'Book except'
 
-
+        if Book2keyword.query.filter_by(keyword=keyworkds, book=book).first() is None:
+            b2k = Book2keyword(keyword=keyworkds, book=book)
+            db.session.add(b2k)
+        else:
+            print 'Book2keyword except'
